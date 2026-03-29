@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mini Arcade | Single Page Games Hub</title>
+  <title>Mini Arcade V2 PRO | Single Page Games Hub</title>
   <style>
     :root {
-      --bg: #0a0f1f;
-      --bg-2: #11182f;
-      --card: rgba(17, 24, 47, 0.92);
-      --card-2: rgba(23, 32, 63, 0.95);
+      --bg: #070b16;
+      --bg-2: #0d1326;
+      --card: rgba(13, 19, 38, 0.92);
+      --card-2: rgba(18, 26, 52, 0.95);
       --text: #eef2ff;
       --muted: #a5b4fc;
       --accent: #7c3aed;
@@ -17,8 +17,8 @@
       --success: #22c55e;
       --danger: #ef4444;
       --warning: #f59e0b;
-      --border: rgba(255, 255, 255, 0.08);
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --border: rgba(255,255,255,0.08);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
 
     * {
@@ -39,7 +39,7 @@
     }
 
     .container {
-      max-width: 1280px;
+      max-width: 1380px;
       margin: 0 auto;
     }
 
@@ -75,7 +75,7 @@
     .hero p {
       color: var(--muted);
       line-height: 1.6;
-      max-width: 780px;
+      max-width: 820px;
     }
 
     .section-title {
@@ -107,6 +107,12 @@
       backdrop-filter: blur(12px);
     }
 
+    .layout {
+      display: grid;
+      grid-template-columns: 1.6fr 0.8fr;
+      gap: 24px;
+    }
+
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -123,6 +129,7 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      min-height: 240px;
     }
 
     .game-card:hover {
@@ -136,7 +143,7 @@
     }
 
     .game-card h3 {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
     }
 
     .game-card p {
@@ -176,13 +183,17 @@
       background: rgba(255,255,255,0.12);
     }
 
-    .game-arena {
-      display: none;
-      margin-top: 24px;
+    .hidden {
+      display: none !important;
     }
 
-    .game-arena.active {
-      display: block;
+    .fade-in {
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .arena-top {
@@ -205,10 +216,90 @@
       line-height: 1.5;
     }
 
+    .stats-panel {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+      height: fit-content;
+      position: sticky;
+      top: 24px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-box {
+      background: var(--card-2);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .stat-box .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-box .value {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .leaderboard-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .leader-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: var(--card-2);
+      border: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .game-panel {
+      min-height: 480px;
+    }
+
     .center {
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    .status-box {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 14px;
+    }
+
+    .stat-pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
     }
 
     /* Tic Tac Toe */
@@ -237,13 +328,6 @@
 
     .ttt-cell:hover {
       border-color: rgba(34, 211, 238, 0.35);
-    }
-
-    .status-box {
-      margin-top: 10px;
-      text-align: center;
-      color: var(--muted);
-      font-weight: 600;
     }
 
     /* RPS */
@@ -339,26 +423,76 @@
       border-color: rgba(34, 197, 94, 0.35);
     }
 
-    .stats-row {
-      display: flex;
+    /* Whack a Mole */
+    .mole-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
       gap: 14px;
-      flex-wrap: wrap;
+      width: fit-content;
+      margin: 18px auto;
+    }
+
+    .mole-hole {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      background: var(--card-2);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
       justify-content: center;
-      margin-top: 12px;
+      font-size: 2rem;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.15s ease;
     }
 
-    .stat-pill {
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 700;
+    .mole-hole.active {
+      background: rgba(34, 197, 94, 0.12);
+      border-color: rgba(34, 197, 94, 0.25);
+      transform: scale(1.04);
     }
 
-    .hidden {
-      display: none !important;
+    /* Typing */
+    .typing-box {
+      display: grid;
+      gap: 14px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .typing-prompt {
+      background: var(--card-2);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 16px;
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 90px;
+    }
+
+    .typing-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 16px;
+      outline: none;
+      min-height: 120px;
+      resize: vertical;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-panel {
+        position: static;
+      }
     }
 
     @media (max-width: 640px) {
@@ -393,123 +527,295 @@
       .reaction-box {
         height: 210px;
       }
+
+      .mole-grid {
+        grid-template-columns: repeat(3, 82px);
+        gap: 10px;
+      }
+
+      .mole-hole {
+        width: 82px;
+        height: 82px;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <section class="hero">
-      <span class="badge">Single Page Mini Arcade</span>
-      <h1>Mini Arcade Games Hub</h1>
+      <span class="badge">Mini Arcade V2 PRO</span>
+      <h1>Single-Page Multi-Game Arcade</h1>
       <p>
-        A single-page arcade website with multiple games inside one index file.
-        Choose any game, play instantly, and return to the menu anytime.
+        A premium single-page arcade website with multiple games inside one index file.
+        Choose any game, play instantly, track best scores, and manage everything in one GitHub-ready file.
       </p>
     </section>
 
-    <!-- MENU -->
-    <section id="menuSection" class="card">
-      <div class="section-title">
-        <h2>Select a Game</h2>
-      </div>
-      <p class="sub">All games run inside this same page. Click a game card to start playing.</p>
+    <div class="layout">
+      <main>
+        <!-- MENU -->
+        <section id="menuSection" class="card fade-in">
+          <div class="section-title">
+            <h2>Select a Game</h2>
+          </div>
+          <p class="sub">All games run inside this same page. Click any card to open the game arena.</p>
 
-      <div class="games-grid">
-        <div class="game-card">
-          <div class="game-icon">⭕</div>
-          <h3>Tic Tac Toe</h3>
-          <p>Classic 2-player turn-based game. Clean, fast, and simple.</p>
-          <button class="btn" onclick="openGame('ticTacToe')">Play Now</button>
-        </div>
+          <div class="games-grid">
+            <div class="game-card">
+              <div class="game-icon">⭕</div>
+              <h3>Tic Tac Toe</h3>
+              <p>Classic 2-player turn-based game. Fast, clean, and reliable.</p>
+              <button class="btn" onclick="openGame('ticTacToe')">Play Now</button>
+            </div>
 
-        <div class="game-card">
-          <div class="game-icon">✊</div>
-          <h3>Rock Paper Scissors</h3>
-          <p>Play against the computer and test your luck with instant results.</p>
-          <button class="btn" onclick="openGame('rps')">Play Now</button>
-        </div>
+            <div class="game-card">
+              <div class="game-icon">✊</div>
+              <h3>Rock Paper Scissors</h3>
+              <p>Play against the computer and track your wins, losses, and draws.</p>
+              <button class="btn" onclick="openGame('rps')">Play Now</button>
+            </div>
 
-        <div class="game-card">
-          <div class="game-icon">⚡</div>
-          <h3>Reaction Speed Test</h3>
-          <p>Measure how fast you react when the box turns green.</p>
-          <button class="btn" onclick="openGame('reaction')">Play Now</button>
-        </div>
+            <div class="game-card">
+              <div class="game-icon">⚡</div>
+              <h3>Reaction Speed Test</h3>
+              <p>Measure your reaction time. Fastest result is saved automatically.</p>
+              <button class="btn" onclick="openGame('reaction')">Play Now</button>
+            </div>
 
-        <div class="game-card">
-          <div class="game-icon">🧠</div>
-          <h3>Memory Match</h3>
-          <p>Match all emoji pairs with the fewest moves possible.</p>
-          <button class="btn" onclick="openGame('memory')">Play Now</button>
-        </div>
-      </div>
-    </section>
+            <div class="game-card">
+              <div class="game-icon">🧠</div>
+              <h3>Memory Match</h3>
+              <p>Match all pairs in the fewest moves possible. Best moves are saved.</p>
+              <button class="btn" onclick="openGame('memory')">Play Now</button>
+            </div>
 
-    <!-- GAME ARENA -->
-    <section id="gameArena" class="game-arena card active hidden">
-      <div class="arena-top">
-        <div class="arena-title" id="arenaTitle">Game</div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn-secondary" onclick="resetCurrentGame()">Restart</button>
-          <button class="btn-secondary" onclick="backToMenu()">← Back to Menu</button>
-        </div>
-      </div>
+            <div class="game-card">
+              <div class="game-icon">🔨</div>
+              <h3>Whack-a-Mole</h3>
+              <p>Hit as many moles as possible before the timer ends. High score is stored.</p>
+              <button class="btn" onclick="openGame('mole')">Play Now</button>
+            </div>
 
-      <p class="arena-desc" id="arenaDesc">Play the selected game here.</p>
+            <div class="game-card">
+              <div class="game-icon">⌨️</div>
+              <h3>Typing Speed Test</h3>
+              <p>Type the prompt accurately and measure your typing speed in WPM.</p>
+              <button class="btn" onclick="openGame('typing')">Play Now</button>
+            </div>
+          </div>
+        </section>
 
-      <!-- Tic Tac Toe -->
-      <div id="ticTacToe" class="game-panel hidden">
-        <div class="center">
-          <div class="ttt-board" id="tttBoard"></div>
-        </div>
-        <div class="status-box" id="tttStatus">Player X's turn</div>
-      </div>
+        <!-- GAME ARENA -->
+        <section id="gameArena" class="card hidden fade-in">
+          <div class="arena-top">
+            <div class="arena-title" id="arenaTitle">Game Arena</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn-secondary" onclick="resetCurrentGame()">Restart</button>
+              <button class="btn-secondary" onclick="backToMenu()">← Back to Menu</button>
+            </div>
+          </div>
 
-      <!-- RPS -->
-      <div id="rps" class="game-panel hidden">
-        <div class="rps-buttons">
-          <button class="btn rps-btn" onclick="playRPS('Rock')">🪨 Rock</button>
-          <button class="btn rps-btn" onclick="playRPS('Paper')">📄 Paper</button>
-          <button class="btn rps-btn" onclick="playRPS('Scissors')">✂️ Scissors</button>
-        </div>
-        <div class="rps-result" id="rpsResult">
-          Choose Rock, Paper, or Scissors to begin.
-        </div>
-        <div class="stats-row">
-          <div class="stat-pill">Wins: <span id="rpsWins">0</span></div>
-          <div class="stat-pill">Losses: <span id="rpsLosses">0</span></div>
-          <div class="stat-pill">Draws: <span id="rpsDraws">0</span></div>
-        </div>
-      </div>
+          <p class="arena-desc" id="arenaDesc">Play the selected game here.</p>
 
-      <!-- Reaction -->
-      <div id="reaction" class="game-panel hidden">
-        <div class="reaction-box" id="reactionBox" onclick="handleReactionClick()">
-          Click "Restart" to begin the test
-        </div>
-        <div class="stats-row">
-          <div class="stat-pill">Best Time: <span id="reactionBest">--</span></div>
-          <div class="stat-pill">Last Time: <span id="reactionLast">--</span></div>
-        </div>
-      </div>
+          <!-- Tic Tac Toe -->
+          <div id="ticTacToe" class="game-panel hidden">
+            <div class="center">
+              <div class="ttt-board" id="tttBoard"></div>
+            </div>
+            <div class="status-box" id="tttStatus">Player X's turn</div>
+          </div>
 
-      <!-- Memory -->
-      <div id="memory" class="game-panel hidden">
-        <div class="center">
-          <div class="memory-grid" id="memoryGrid"></div>
-        </div>
-        <div class="stats-row">
-          <div class="stat-pill">Moves: <span id="memoryMoves">0</span></div>
-          <div class="stat-pill">Matches: <span id="memoryMatches">0</span>/8</div>
-        </div>
-        <div class="status-box" id="memoryStatus">Find all matching pairs.</div>
-      </div>
-    </section>
+          <!-- RPS -->
+          <div id="rps" class="game-panel hidden">
+            <div class="rps-buttons">
+              <button class="btn rps-btn" onclick="playRPS('Rock')">🪨 Rock</button>
+              <button class="btn rps-btn" onclick="playRPS('Paper')">📄 Paper</button>
+              <button class="btn rps-btn" onclick="playRPS('Scissors')">✂️ Scissors</button>
+            </div>
+            <div class="rps-result" id="rpsResult">Choose Rock, Paper, or Scissors to begin.</div>
+            <div class="stats-row">
+              <div class="stat-pill">Wins: <span id="rpsWins">0</span></div>
+              <div class="stat-pill">Losses: <span id="rpsLosses">0</span></div>
+              <div class="stat-pill">Draws: <span id="rpsDraws">0</span></div>
+            </div>
+          </div>
+
+          <!-- Reaction -->
+          <div id="reaction" class="game-panel hidden">
+            <div class="reaction-box" id="reactionBox" onclick="handleReactionClick()">
+              Click "Restart" to begin the test
+            </div>
+            <div class="stats-row">
+              <div class="stat-pill">Best Time: <span id="reactionBest">--</span></div>
+              <div class="stat-pill">Last Time: <span id="reactionLast">--</span></div>
+            </div>
+          </div>
+
+          <!-- Memory -->
+          <div id="memory" class="game-panel hidden">
+            <div class="center">
+              <div class="memory-grid" id="memoryGrid"></div>
+            </div>
+            <div class="stats-row">
+              <div class="stat-pill">Moves: <span id="memoryMoves">0</span></div>
+              <div class="stat-pill">Matches: <span id="memoryMatches">0</span>/8</div>
+            </div>
+            <div class="status-box" id="memoryStatus">Find all matching pairs.</div>
+          </div>
+
+          <!-- Whack a Mole -->
+          <div id="mole" class="game-panel hidden">
+            <div class="center">
+              <div class="mole-grid" id="moleGrid"></div>
+            </div>
+            <div class="stats-row">
+              <div class="stat-pill">Score: <span id="moleScore">0</span></div>
+              <div class="stat-pill">Time Left: <span id="moleTime">20</span>s</div>
+              <div class="stat-pill">Best: <span id="moleBest">0</span></div>
+            </div>
+            <div class="status-box" id="moleStatus">Click Restart to begin a 20-second round.</div>
+          </div>
+
+          <!-- Typing -->
+          <div id="typing" class="game-panel hidden">
+            <div class="typing-box">
+              <div class="typing-prompt" id="typingPrompt"></div>
+              <textarea
+                id="typingInput"
+                class="typing-input"
+                placeholder="Start typing the prompt here..."
+                oninput="handleTypingInput()"
+              ></textarea>
+              <div class="stats-row">
+                <div class="stat-pill">WPM: <span id="typingWPM">0</span></div>
+                <div class="stat-pill">Accuracy: <span id="typingAccuracy">100</span>%</div>
+                <div class="stat-pill">Best WPM: <span id="typingBest">0</span></div>
+              </div>
+              <div class="status-box" id="typingStatus">Click Restart to load a new prompt and start the test.</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- SIDE PANEL -->
+      <aside class="stats-panel">
+        <section class="card">
+          <div class="section-title">
+            <h2>Arcade Stats</h2>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="label">Games Played</div>
+              <div class="value" id="gamesPlayedStat">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Current Game</div>
+              <div class="value" id="currentGameStat" style="font-size:1rem;">Menu</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">
+            <h2>Leaderboard</h2>
+            <button class="btn-secondary" onclick="resetLeaderboard()">Reset</button>
+          </div>
+          <div class="leaderboard-list" id="leaderboardList"></div>
+        </section>
+      </aside>
+    </div>
   </div>
 
   <script>
+    /* =========================
+       STORAGE
+    ========================= */
+    const STORAGE_KEYS = {
+      gamesPlayed: "arcade_v2_games_played",
+      reactionBest: "arcade_v2_reaction_best",
+      memoryBest: "arcade_v2_memory_best",
+      moleBest: "arcade_v2_mole_best",
+      typingBest: "arcade_v2_typing_best"
+    };
+
+    let gamesPlayed = parseInt(localStorage.getItem(STORAGE_KEYS.gamesPlayed)) || 0;
     let currentGame = null;
 
+    function saveStat(key, value) {
+      localStorage.setItem(key, String(value));
+    }
+
+    function getStat(key, fallback = 0) {
+      const val = localStorage.getItem(key);
+      return val !== null ? Number(val) : fallback;
+    }
+
+    function incrementGamesPlayed() {
+      gamesPlayed++;
+      saveStat(STORAGE_KEYS.gamesPlayed, gamesPlayed);
+      updateSidebar();
+    }
+
+    function updateSidebar() {
+      document.getElementById("gamesPlayedStat").textContent = gamesPlayed;
+      document.getElementById("currentGameStat").textContent = currentGame ? formatGameName(currentGame) : "Menu";
+      renderLeaderboard();
+    }
+
+    function formatGameName(id) {
+      const map = {
+        ticTacToe: "Tic Tac Toe",
+        rps: "RPS",
+        reaction: "Reaction",
+        memory: "Memory",
+        mole: "Whack-a-Mole",
+        typing: "Typing"
+      };
+      return map[id] || "Menu";
+    }
+
+    function renderLeaderboard() {
+      const list = document.getElementById("leaderboardList");
+
+      const items = [
+        { label: "Reaction Best", value: getStat(STORAGE_KEYS.reactionBest, 0) ? `${getStat(STORAGE_KEYS.reactionBest)} ms` : "--" },
+        { label: "Memory Best", value: getStat(STORAGE_KEYS.memoryBest, 0) ? `${getStat(STORAGE_KEYS.memoryBest)} moves` : "--" },
+        { label: "Mole Best", value: `${getStat(STORAGE_KEYS.moleBest, 0)}` },
+        { label: "Typing Best", value: `${getStat(STORAGE_KEYS.typingBest, 0)} WPM` }
+      ];
+
+      list.innerHTML = items.map(item => `
+        <div class="leader-item">
+          <span>${item.label}</span>
+          <strong style="color: var(--text)">${item.value}</strong>
+        </div>
+      `).join("");
+    }
+
+    function resetLeaderboard() {
+      localStorage.removeItem(STORAGE_KEYS.reactionBest);
+      localStorage.removeItem(STORAGE_KEYS.memoryBest);
+      localStorage.removeItem(STORAGE_KEYS.moleBest);
+      localStorage.removeItem(STORAGE_KEYS.typingBest);
+      renderLeaderboard();
+      syncVisibleBestScores();
+    }
+
+    function syncVisibleBestScores() {
+      const rb = getStat(STORAGE_KEYS.reactionBest, 0);
+      document.getElementById("reactionBest").textContent = rb ? `${rb} ms` : "--";
+
+      document.getElementById("moleBest").textContent = getStat(STORAGE_KEYS.moleBest, 0);
+      document.getElementById("typingBest").textContent = getStat(STORAGE_KEYS.typingBest, 0);
+    }
+
+    /* =========================
+       MENU + ARENA
+    ========================= */
     const menuSection = document.getElementById("menuSection");
     const gameArena = document.getElementById("gameArena");
     const arenaTitle = document.getElementById("arenaTitle");
@@ -517,9 +823,11 @@
 
     function openGame(gameId) {
       currentGame = gameId;
+      incrementGamesPlayed();
 
       menuSection.classList.add("hidden");
       gameArena.classList.remove("hidden");
+      gameArena.classList.add("fade-in");
 
       document.querySelectorAll(".game-panel").forEach(panel => panel.classList.add("hidden"));
       document.getElementById(gameId).classList.remove("hidden");
@@ -530,7 +838,7 @@
         initTicTacToe();
       } else if (gameId === "rps") {
         arenaTitle.textContent = "Rock Paper Scissors";
-        arenaDesc.textContent = "Play against the computer. Choose your move.";
+        arenaDesc.textContent = "Play against the computer and track your performance.";
         initRPS();
       } else if (gameId === "reaction") {
         arenaTitle.textContent = "Reaction Speed Test";
@@ -540,19 +848,40 @@
         arenaTitle.textContent = "Memory Match";
         arenaDesc.textContent = "Match all emoji pairs with the fewest moves.";
         initMemory();
+      } else if (gameId === "mole") {
+        arenaTitle.textContent = "Whack-a-Mole";
+        arenaDesc.textContent = "Hit the active mole as many times as possible in 20 seconds.";
+        initMole();
+      } else if (gameId === "typing") {
+        arenaTitle.textContent = "Typing Speed Test";
+        arenaDesc.textContent = "Type the prompt accurately and measure your typing speed.";
+        initTyping();
       }
+
+      updateSidebar();
     }
 
     function backToMenu() {
       currentGame = null;
       menuSection.classList.remove("hidden");
+      menuSection.classList.add("fade-in");
       gameArena.classList.add("hidden");
       document.querySelectorAll(".game-panel").forEach(panel => panel.classList.add("hidden"));
+
+      clearReactionTimers();
+      clearMoleTimers();
+
+      updateSidebar();
     }
 
     function resetCurrentGame() {
       if (!currentGame) return;
-      openGame(currentGame);
+      clearReactionTimers();
+      clearMoleTimers();
+
+      const active = currentGame;
+      currentGame = null;
+      openGame(active);
     }
 
     /* =========================
@@ -674,14 +1003,17 @@
     let reactionStart = 0;
     let reactionWaiting = false;
     let reactionReady = false;
-    let reactionBest = null;
     let reactionLast = null;
 
-    function initReaction() {
+    function clearReactionTimers() {
       clearTimeout(reactionTimeout);
+    }
+
+    function initReaction() {
+      clearReactionTimers();
 
       const box = document.getElementById("reactionBox");
-      box.className = "reaction-box";
+      box.className = "reaction-box waiting";
       box.textContent = "Wait for the green signal...";
 
       reactionWaiting = true;
@@ -698,14 +1030,16 @@
         box.textContent = "CLICK NOW!";
       }, delay);
 
-      updateReactionStats();
+      const best = getStat(STORAGE_KEYS.reactionBest, 0);
+      document.getElementById("reactionBest").textContent = best ? `${best} ms` : "--";
+      document.getElementById("reactionLast").textContent = reactionLast !== null ? `${reactionLast} ms` : "--";
     }
 
     function handleReactionClick() {
       const box = document.getElementById("reactionBox");
 
       if (reactionWaiting) {
-        clearTimeout(reactionTimeout);
+        clearReactionTimers();
         reactionWaiting = false;
         reactionReady = false;
         box.className = "reaction-box too-soon";
@@ -716,20 +1050,20 @@
       if (reactionReady) {
         const time = Math.round(performance.now() - reactionStart);
         reactionLast = time;
-        if (reactionBest === null || time < reactionBest) {
-          reactionBest = time;
+
+        const best = getStat(STORAGE_KEYS.reactionBest, 0);
+        if (!best || time < best) {
+          saveStat(STORAGE_KEYS.reactionBest, time);
         }
 
         reactionReady = false;
         box.className = "reaction-box";
         box.textContent = `Your reaction time: ${time} ms. Click Restart to try again.`;
-        updateReactionStats();
-      }
-    }
 
-    function updateReactionStats() {
-      document.getElementById("reactionBest").textContent = reactionBest !== null ? `${reactionBest} ms` : "--";
-      document.getElementById("reactionLast").textContent = reactionLast !== null ? `${reactionLast} ms` : "--";
+        document.getElementById("reactionLast").textContent = `${reactionLast} ms`;
+        document.getElementById("reactionBest").textContent = `${getStat(STORAGE_KEYS.reactionBest)} ms`;
+        renderLeaderboard();
+      }
     }
 
     /* =========================
@@ -805,10 +1139,16 @@
           memoryFlipped = [];
           memoryLock = false;
 
+          const best = getStat(STORAGE_KEYS.memoryBest, 0);
+          if (memoryMatched === 8 && (!best || memoryMoves < best)) {
+            saveStat(STORAGE_KEYS.memoryBest, memoryMoves);
+            renderLeaderboard();
+          }
+
           updateMemoryStats();
 
           if (memoryMatched === 8) {
-            document.getElementById("memoryStatus").textContent = `Excellent! You completed the game in ${memoryMoves} moves.`;
+            document.getElementById("memoryStatus").textContent = `Excellent! Completed in ${memoryMoves} moves.`;
           } else {
             document.getElementById("memoryStatus").textContent = "Match found! Keep going.";
           }
@@ -835,6 +1175,182 @@
       document.getElementById("memoryMoves").textContent = memoryMoves;
       document.getElementById("memoryMatches").textContent = memoryMatched;
     }
+
+    /* =========================
+       WHACK-A-MOLE
+    ========================= */
+    let moleActiveIndex = -1;
+    let moleScore = 0;
+    let moleTimeLeft = 20;
+    let moleGameRunning = false;
+    let moleSwitchInterval = null;
+    let moleTimerInterval = null;
+
+    function clearMoleTimers() {
+      clearInterval(moleSwitchInterval);
+      clearInterval(moleTimerInterval);
+    }
+
+    function initMole() {
+      clearMoleTimers();
+
+      moleScore = 0;
+      moleTimeLeft = 20;
+      moleGameRunning = true;
+      moleActiveIndex = -1;
+
+      const grid = document.getElementById("moleGrid");
+      grid.innerHTML = "";
+
+      for (let i = 0; i < 9; i++) {
+        const hole = document.createElement("div");
+        hole.className = "mole-hole";
+        hole.onclick = () => hitMole(i);
+        hole.textContent = "🕳️";
+        grid.appendChild(hole);
+      }
+
+      document.getElementById("moleScore").textContent = moleScore;
+      document.getElementById("moleTime").textContent = moleTimeLeft;
+      document.getElementById("moleBest").textContent = getStat(STORAGE_KEYS.moleBest, 0);
+      document.getElementById("moleStatus").textContent = "Round started. Hit the active mole!";
+
+      spawnMole();
+
+      moleSwitchInterval = setInterval(spawnMole, 700);
+      moleTimerInterval = setInterval(() => {
+        moleTimeLeft--;
+        document.getElementById("moleTime").textContent = moleTimeLeft;
+
+        if (moleTimeLeft <= 0) {
+          endMoleGame();
+        }
+      }, 1000);
+    }
+
+    function spawnMole() {
+      if (!moleGameRunning) return;
+
+      const holes = document.querySelectorAll(".mole-hole");
+      holes.forEach(h => {
+        h.classList.remove("active");
+        h.textContent = "🕳️";
+      });
+
+      moleActiveIndex = Math.floor(Math.random() * 9);
+      holes[moleActiveIndex].classList.add("active");
+      holes[moleActiveIndex].textContent = "🐹";
+    }
+
+    function hitMole(index) {
+      if (!moleGameRunning) return;
+      if (index !== moleActiveIndex) return;
+
+      moleScore++;
+      document.getElementById("moleScore").textContent = moleScore;
+
+      const holes = document.querySelectorAll(".mole-hole");
+      holes[index].classList.remove("active");
+      holes[index].textContent = "💥";
+      moleActiveIndex = -1;
+    }
+
+    function endMoleGame() {
+      moleGameRunning = false;
+      clearMoleTimers();
+
+      const holes = document.querySelectorAll(".mole-hole");
+      holes.forEach(h => {
+        h.classList.remove("active");
+        h.textContent = "🕳️";
+      });
+
+      const best = getStat(STORAGE_KEYS.moleBest, 0);
+      if (moleScore > best) {
+        saveStat(STORAGE_KEYS.moleBest, moleScore);
+      }
+
+      document.getElementById("moleBest").textContent = getStat(STORAGE_KEYS.moleBest, 0);
+      document.getElementById("moleStatus").textContent = `Time up! Final score: ${moleScore}. Click Restart to play again.`;
+      renderLeaderboard();
+    }
+
+    /* =========================
+       TYPING SPEED TEST
+    ========================= */
+    const typingPrompts = [
+      "Practice every day and consistency will outperform intensity over time.",
+      "Small focused actions repeated daily create extraordinary long term results.",
+      "Discipline is choosing what matters most over what feels easiest now.",
+      "Execution with clarity and patience builds real skill and real momentum.",
+      "The quality of your habits determines the quality of your outcomes."
+    ];
+
+    let typingStartTime = null;
+    let typingPrompt = "";
+
+    function initTyping() {
+      typingPrompt = typingPrompts[Math.floor(Math.random() * typingPrompts.length)];
+      typingStartTime = null;
+
+      document.getElementById("typingPrompt").textContent = typingPrompt;
+      document.getElementById("typingInput").value = "";
+      document.getElementById("typingWPM").textContent = "0";
+      document.getElementById("typingAccuracy").textContent = "100";
+      document.getElementById("typingBest").textContent = getStat(STORAGE_KEYS.typingBest, 0);
+      document.getElementById("typingStatus").textContent = "Start typing. WPM updates as you progress.";
+    }
+
+    function handleTypingInput() {
+      const input = document.getElementById("typingInput").value;
+
+      if (typingStartTime === null && input.length > 0) {
+        typingStartTime = performance.now();
+      }
+
+      const accuracy = calculateAccuracy(input, typingPrompt);
+      document.getElementById("typingAccuracy").textContent = accuracy;
+
+      if (typingStartTime !== null) {
+        const minutes = (performance.now() - typingStartTime) / 60000;
+        const wordsTyped = input.trim().length / 5;
+        const wpm = minutes > 0 ? Math.max(0, Math.round(wordsTyped / minutes)) : 0;
+
+        document.getElementById("typingWPM").textContent = wpm;
+
+        if (input === typingPrompt) {
+          const best = getStat(STORAGE_KEYS.typingBest, 0);
+          if (wpm > best) {
+            saveStat(STORAGE_KEYS.typingBest, wpm);
+            renderLeaderboard();
+          }
+
+          document.getElementById("typingBest").textContent = getStat(STORAGE_KEYS.typingBest, 0);
+          document.getElementById("typingStatus").textContent = `Completed! Final WPM: ${wpm}. Accuracy: ${accuracy}%.`;
+        }
+      }
+    }
+
+    function calculateAccuracy(input, prompt) {
+      if (input.length === 0) return 100;
+
+      let correct = 0;
+      for (let i = 0; i < input.length; i++) {
+        if (input[i] === prompt[i]) correct++;
+      }
+
+      return Math.max(0, Math.round((correct / input.length) * 100));
+    }
+
+    /* =========================
+       INIT
+    ========================= */
+    function initApp() {
+      updateSidebar();
+      syncVisibleBestScores();
+    }
+
+    initApp();
   </script>
 </body>
 </html>
